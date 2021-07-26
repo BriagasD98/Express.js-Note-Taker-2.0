@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'))
 });
+// notes page
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'))
 });
@@ -26,6 +27,7 @@ app.get('/notes', (req, res) => {
 app.get('/api/notes', (req, res) => {
     res.json(notes);
 });
+// POST
 app.post('/api/notes', (req, res) => {
     let newNote = req.body;
     newNote.id = uuidv4();
@@ -34,6 +36,20 @@ app.post('/api/notes', (req, res) => {
         if (err) throw err;
     });
     res.send(notes);
+    console.log("Note Saved!")
+});
+// DELETE
+app.delete('/api/notes/:id', (req, res) => {
+    notes.forEach((note, i) => {
+    // removes note by id
+        if (note.id === req.params.id) {notes.splice(i, 1)}
+    });
+    // rewrites notes to json file
+    fs.writeFile('db/db.json', JSON.stringify(notes), (err) => {
+        if (err) throw err;
+    });
+    res.send(notes);
+    console.log("Note Deleted!")
 });
 
 // Server listens and initializes
