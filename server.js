@@ -4,7 +4,8 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const fs = require('fs');
 const path = require('path');
-const db = require('./db/db.json');
+const uuidv4 = require("uuid/v4");
+const notes = require('./db/db.json');
 
 // Express
 app.use(express.static('public'));
@@ -21,7 +22,7 @@ app.get('/notes', (req, res) => {
 
 // ApiRoutes
 app.get('/api/notes', (req, res) => {
-    res.json(db);
+    res.json(notes);
 });
 
 // Server listens and initializes
