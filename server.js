@@ -4,7 +4,9 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const fs = require('fs');
 const path = require('path');
-const uuidv4 = require("uuid/v4");
+// Unique ID generator
+const { v4: uuidv4 } = require("uuid");
+// Saved notes in JSON format
 const notes = require('./db/db.json');
 
 // Express
@@ -23,6 +25,15 @@ app.get('/notes', (req, res) => {
 // ApiRoutes
 app.get('/api/notes', (req, res) => {
     res.json(notes);
+});
+app.post('/api/notes', (req, res) => {
+    let newNote = req.body;
+    newNote.id = uuidv4();
+    notes.push(newNote);
+    fs.writeFileSync('./db/db.json', JSON.stringify(notes), (err) => {
+        if (err) throw err;
+    });
+    res.send(notes);
 });
 
 // Server listens and initializes
