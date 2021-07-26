@@ -19,6 +19,11 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'))
 });
 
+// ApiRoutes
+app.get('/api/notes', (req, res) => {
+    res.json(db);
+});
+
 // Server listens and initializes
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
